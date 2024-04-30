@@ -232,7 +232,7 @@ class UserInfo extends React.Component {
                         <div className='page-calendar-data' style={{ zIndex: '1' }}>
                             {this.genCalendarData(false)}
                         </div>
-                        <button className="page-calendar-button" onClick={this.handleClick}>Перейти в календарь</button>
+                        <button className="page-calendar-button">Перейти в календарь</button>
                     </div>
                 </div>
                 <Footer />
