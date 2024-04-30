@@ -1,0 +1,13 @@
+.error-page-wrapper {
+    height: calc(100vh - 485px);
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.error-page-wrapper h1 {
+    font-size: 60px;
+    margin-bottom: 0;
+}
