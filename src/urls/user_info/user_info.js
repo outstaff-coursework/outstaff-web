@@ -7,7 +7,6 @@ import {base_url} from "../../constants";
 import Stripe from "../../stripe.js"
 
 import axios from "axios";
-import { faro } from '@grafana/faro-web-sdk';
 
 import data from '../../data.json';
 
@@ -178,10 +177,6 @@ class UserInfo extends React.Component {
             }
         }
         document.title = this.state.name;
-    }
-
-    handleClick = () => {
-        faro.api.pushError(new Error('Calendar button not implemented'));
     }
 
     render() {
