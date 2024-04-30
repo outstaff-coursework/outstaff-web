@@ -1,7 +1,8 @@
 import React from "react";
+import axios from "axios";
+import {base_url} from "../../constants";
 import './login.css';
 
-import { faro } from '@grafana/faro-web-sdk';
 
 class Login extends React.Component {
     constructor(props) {
@@ -14,8 +15,18 @@ class Login extends React.Component {
         document.title = 'Вход';
     }
 
-    handleClick = () => {
-        faro.api.pushError(new Error('Login button not implemented'));
+    handleSubmit = (event) => {
+        event.preventDefault();
+        axios.post(base_url + '/login', {
+            login: event.target[0].value,
+            lastName: event.target[1].value
+        })
+        .then(function (response) {
+            console.log(response);
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
     }
 
     render() {
@@ -25,10 +36,10 @@ class Login extends React.Component {
                     <div className='login-panel-strip'>
                         <h6>Вход</h6>
                     </div>
-                    <form>
+                    <form onSubmit={this.handleSubmit}>
                         <input type='text' placeholder='Логин' />
                         <input type='password' placeholder='Пароль' />
-                        <button onClick={this.handleClick}>Войти</button>
+                        <button>Войти</button>
                     </form>
                 </div>
             </div>
