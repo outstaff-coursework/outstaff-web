@@ -34,10 +34,10 @@ class Description extends React.Component {
                 className='rcs-stripe-meeting-description'
                 style={this.genStyle()}
             >
-                <h3>{this.props.meeting.name}</h3>
-                <h4>{this.props.meeting.start} - {this.props.meeting.end}</h4>
+                <h5>{this.props.meeting.name}</h5>
+                <h6>{this.props.meeting.start} - {this.props.meeting.end}</h6>
                 <span>{this.props.meeting.description}</span>
-                <h4>Участники:</h4>
+                <h6>Участники:</h6>
                 <div className='rcs-stripe-meeting-description-participants'>
                     {this.renderParticipants()}
                 </div>

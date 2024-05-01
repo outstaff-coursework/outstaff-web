@@ -1,3 +1,3 @@
-const base_url = 'http://158.160.53.9:5556'
+const base_url = 'http://localhost:5556'
 
 export { base_url }

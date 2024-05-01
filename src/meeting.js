@@ -20,12 +20,12 @@ class Meeting extends React.Component {
         this.setState({
             is_clicked: true,
         })
+        this.props.onClickCallback(this.props.id, !this.state.need_desc);
         if (!this.state.need_desc) {
             this.setState({
                 need_desc: true,
             })
         } else {
-            this.props.onClickCallback(this.props.id);
             this.setState({
                 need_desc: false,
             })

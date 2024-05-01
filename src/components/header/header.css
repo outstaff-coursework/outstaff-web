@@ -89,3 +89,35 @@
     font-size: 15px;
     color: gray;
 }
+
+.header-content-right-user-panel {
+    width: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #fffffa;
+    font-weight: bold;
+}
+
+.header-content-right-user-panel:hover {
+    background-color: black;
+    cursor: pointer;
+}
+
+.header-content-right-logout-panel-logout {
+    height: 50px;
+    width: 100px;
+    margin-top: 50px;
+    margin-left: -100px;
+    background-color: #2c302e;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #fffffa;
+    font-weight: bold;
+}
+
+.header-content-right-logout-panel-logout:hover {
+    background-color: black;
+    cursor: pointer;
+}

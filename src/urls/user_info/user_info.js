@@ -25,6 +25,7 @@ class UserInfo extends React.Component {
             about_user: '...',
             photo_url: '...',
             position: '...',
+            name_of_unit: '...',
         }
         this.state.example_info_table = {
             'Дата рождения': '26 июня 2003 года',
@@ -126,7 +127,9 @@ class UserInfo extends React.Component {
             return
         }
         let url = base_url + '/user/' + this.state.id;
-        axios.get(url).then(res => {
+        axios.get(url, {
+            withCredentials: true
+        }).then(res => {
             let data = res.data;
             this.setState({
                 contacts_table: {
@@ -142,6 +145,7 @@ class UserInfo extends React.Component {
                 about_user: data['user_about'],
                 photo_url: data['photo_url'],
                 position: data['position'],
+                name_of_unit: data['name_of_unit'],
             });
             document.title = data['name'];
         }).catch(error => {
@@ -164,6 +168,7 @@ class UserInfo extends React.Component {
 
     componentDidUpdate(prevProps, prevState, snapshot) {
         if (prevState.id !== this.state.id) {
+            document.title = this.state.name;
             this.loadInfo();
         }
     }
@@ -176,7 +181,6 @@ class UserInfo extends React.Component {
                 break;
             }
         }
-        document.title = this.state.name;
     }
 
     render() {
@@ -204,7 +208,7 @@ class UserInfo extends React.Component {
                                 <h6 className='contrast-text'>На встрече с 11:00 до 12:00</h6>
                             </div>
                             <div className='page-info-data-full_post'>
-                                <span>Компания | Департамент | Служба | Отдел | Команда | Ещё что-нибудь</span>
+                                <span>{this.state.name_of_unit}</span>
                             </div>
                             <div className='page-info-data-about'>
                                 <h6>О себе:</h6>
@@ -232,7 +236,7 @@ class UserInfo extends React.Component {
                         <div className='page-calendar-data' style={{ zIndex: '1' }}>
                             {this.genCalendarData(false)}
                         </div>
-                        <button className="page-calendar-button">Перейти в календарь</button>
+                        <a className="page-calendar-button" href={'/calendar/' + this.state.id}>Перейти в календарь</a>
                     </div>
                 </div>
                 <Footer />

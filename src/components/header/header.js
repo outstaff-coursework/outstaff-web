@@ -11,6 +11,8 @@ class Header extends React.Component {
 
         this.state = {
             loaded_search: false,
+            loaded_logout: false,
+            logged_in: false,
             peoples: [],
         }
     }
@@ -21,13 +23,15 @@ class Header extends React.Component {
             return
         }
         let url = base_url + '/users/' + search_word;
-        axios.get(url).then(res => {
+        axios.get(url, {
+            withCredentials: true
+        }).then(res => {
             let data = res.data;
             let new_peoples = []
             data['items'].forEach(element => {
                 new_peoples.push(
                     <div className='header-content-left-search-list-item'>
-                        <a href={'/user/' + String(element.user_id)}>
+                        <a href={'/user/' + String(element.username)}>
                             <div className='header-content-left-search-list-item-a'>
                                 <span className='header-content-left-search-list-item-name'>{element.name}</span>
                                 <span className='header-content-left-search-list-item-position'>{element.position}</span>
@@ -42,15 +46,38 @@ class Header extends React.Component {
         });
     }
 
-    genSearchList() {
-        
-    }
-
     getSearchList() {
         if (this.state.peoples == []) {
             return
         }
         return this.state.peoples
+    }
+
+    getUserPanel() {
+        let username = localStorage.getItem('username')
+        if (username === '') {
+            return (
+                <span href='/login'>Войти</span>
+            )
+        } else {
+            return (
+                <span>{username}</span>
+            )
+        }
+    }
+
+    getLogout() {
+        if (!this.state.loaded_logout) {
+            return
+        }
+        return (
+            <div className='header-content-right-logout-panel-logout' onClick={(event) => {
+                localStorage.setItem('username', '')
+                window.location.replace('/login');
+            }}>
+                <span>Выйти</span>
+            </div>
+        )
     }
 
     render() {
@@ -67,7 +94,15 @@ class Header extends React.Component {
                         <input type='text' placeholder='🔍 Поиск...' className='header-content-left-search' onChange={(event) => {this.changeSearchWord(event.target.value)}} />
                         <div className='header-content-left-search-list'>{this.getSearchList()}</div>
                     </div>
-                    <div className='header-content-right' />
+                    <div className='header-content-right' >
+                        <div className='header-content-right-user-panel' onClick={(event) => {
+                            if (localStorage.getItem('username') === '') {
+                                window.location.replace('/login');
+                            }
+                            this.setState({loaded_logout: !this.state.loaded_logout})
+                        }}>{this.getUserPanel()}</div>
+                        <div className='header-content-right-logout-panel'>{this.getLogout()}</div>
+                    </div>
                 </div>
             </div>
         );

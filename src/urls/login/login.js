@@ -18,11 +18,16 @@ class Login extends React.Component {
     handleSubmit = (event) => {
         event.preventDefault();
         axios.post(base_url + '/login', {
-            login: event.target[0].value,
-            lastName: event.target[1].value
+            username: event.target[0].value,
+            password: event.target[1].value
+        }, {
+            withCredentials: true
         })
         .then(function (response) {
-            console.log(response);
+            if (response.status === 200) {
+                localStorage.setItem('username', event.target[0].value)
+                window.location.replace('user/' + event.target[0].value);
+            }
         })
         .catch(function (error) {
             console.log(error);
