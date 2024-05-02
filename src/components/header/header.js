@@ -82,7 +82,7 @@ class Header extends React.Component {
 
     render() {
         return (
-            <div className='header'>
+            <div className='header' style={{ zIndex: '10000' }}>
                 <div className='header-content'>
                     <div className='header-content-left'>
                         <div className='header-content-left-logo-section'>

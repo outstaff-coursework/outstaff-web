@@ -29,13 +29,15 @@ class Calendar extends React.Component {
                 data_list: data.events,
                 dates: data.dates
             })
-            console.log(data.events)
         }).catch(error => {
             console.log(error);
             this.setState({
                 is_error: true,
                 error_name: error.response.status,
             });
+            if (error.response.status === 401) {
+                window.location.replace('/login');
+            }
             if (error.response.status === 404) {
                 this.setState({
                     error_text: 'Пользователь не найден',
@@ -124,9 +126,13 @@ class Calendar extends React.Component {
                 })
             }
         }
-        console.log(data)
+        let readonly = false
+        let username = localStorage.getItem('username')
+        if (username != this.state.id) {
+            readonly = true
+        }
         return (
-            <Stripe data={{meetings: data}} is_horizontal={false} date={this.state.dates[idx]} />
+            <Stripe data={{meetings: data}} is_horizontal={false} date={this.state.dates[idx]} readonly={readonly} />
         )
     }
 
@@ -134,56 +140,56 @@ class Calendar extends React.Component {
         return (
             <>
                 <Header />
-                    <div className='calendar'>
-                        <div className='calendar-data' style={{ zIndex: '900' }}>
-                            {this.getDayAndMonth(0)}
-                            <div className='calendar-data-space'>
-                                {this.getStripe(0)}
-                            </div>
-                        </div>
-
-                        <div className='calendar-data' style={{ zIndex: '800' }}>
-                            {this.getDayAndMonth(1)}
-                            <div className='calendar-data-space'>
-                                {this.getStripe(1)}
-                            </div>
-                        </div>
-
-                        <div className='calendar-data' style={{ zIndex: '700' }}>
-                            {this.getDayAndMonth(2)}
-                            <div className='calendar-data-space'>
-                                {this.getStripe(2)}
-                            </div>
-                        </div>
-
-                        <div className='calendar-data' style={{ zIndex: '600' }}>
-                            {this.getDayAndMonth(3)}
-                            <div className='calendar-data-space'>
-                                {this.getStripe(3)}
-                            </div>
-                        </div>
-
-                        <div className='calendar-data' style={{ zIndex: '500' }}>
-                            {this.getDayAndMonth(4)}
-                            <div className='calendar-data-space'>
-                                {this.getStripe(4)}
-                            </div>
-                        </div>
-
-                        <div className='calendar-data' style={{ zIndex: '400' }}>
-                            {this.getDayAndMonth(5)}
-                            <div className='calendar-data-space'>
-                                {this.getStripe(5)}
-                            </div>
-                        </div>
-
-                        <div className='calendar-data' style={{ zIndex: '300' }}>
-                            {this.getDayAndMonth(6)}
-                            <div className='calendar-data-space'>
-                                {this.getStripe(6)}
-                            </div>
+                <div className='calendar' style={{ zIndex: '10' }}>
+                    <div className='calendar-data' style={{ zIndex: '900' }}>
+                        {this.getDayAndMonth(0)}
+                        <div className='calendar-data-space'>
+                            {this.getStripe(0)}
                         </div>
                     </div>
+
+                    <div className='calendar-data' style={{ zIndex: '800' }}>
+                        {this.getDayAndMonth(1)}
+                        <div className='calendar-data-space'>
+                            {this.getStripe(1)}
+                        </div>
+                    </div>
+
+                    <div className='calendar-data' style={{ zIndex: '700' }}>
+                        {this.getDayAndMonth(2)}
+                        <div className='calendar-data-space'>
+                            {this.getStripe(2)}
+                        </div>
+                    </div>
+
+                    <div className='calendar-data' style={{ zIndex: '600' }}>
+                        {this.getDayAndMonth(3)}
+                        <div className='calendar-data-space'>
+                            {this.getStripe(3)}
+                        </div>
+                    </div>
+
+                    <div className='calendar-data' style={{ zIndex: '500' }}>
+                        {this.getDayAndMonth(4)}
+                        <div className='calendar-data-space'>
+                            {this.getStripe(4)}
+                        </div>
+                    </div>
+
+                    <div className='calendar-data' style={{ zIndex: '400' }}>
+                        {this.getDayAndMonth(5)}
+                        <div className='calendar-data-space'>
+                            {this.getStripe(5)}
+                        </div>
+                    </div>
+
+                    <div className='calendar-data' style={{ zIndex: '300' }}>
+                        {this.getDayAndMonth(6)}
+                        <div className='calendar-data-space'>
+                            {this.getStripe(6)}
+                        </div>
+                    </div>
+                </div>
             </>
         );
     }

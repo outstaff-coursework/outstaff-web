@@ -26,6 +26,11 @@ class UserInfo extends React.Component {
             photo_url: '...',
             position: '...',
             name_of_unit: '...',
+            dates_list: [],
+            dates: [],
+            on_meeting: false,
+            meeting_start: '',
+            meeting_end: '',
         }
         this.state.example_info_table = {
             'Дата рождения': '26 июня 2003 года',
@@ -96,32 +101,6 @@ class UserInfo extends React.Component {
         return result;
     }
 
-    genCalendarData(is_today) {
-        let result = []
-        let meetings, panel_label
-        if (is_today) {
-            meetings = this.state.meetings.today
-            panel_label = 'Сегодня'
-        } else {
-            meetings = this.state.meetings.tomorrow
-            panel_label = 'Завтра'
-        }
-        let date = meetings.date
-        let meetings_list = meetings.meetings_list
-        result.push(
-            <div className='page-calendar-data-panel'>
-                <h6>{panel_label}</h6>
-                <h6>{date}</h6>
-            </div>
-        )
-        result.push(
-            <div className='page-calendar-data-space'>
-                <Stripe data={data} is_horizontal={true} date={'2024-04-23'} />
-            </div>
-        )
-        return result;
-    }
-
     loadInfo() {
         if (this.state.id == '-1') {
             return
@@ -164,6 +143,46 @@ class UserInfo extends React.Component {
                 });
             }
         });
+
+        url = base_url + '/calendar/' + this.state.id + '?count=3';
+        axios.get(url, {
+            withCredentials: true
+        }).then(res => {
+            let data = res.data;
+            this.setState({
+                data_list: data.events,
+                dates: data.dates
+            })
+            if (data.current_event !== undefined) {
+                this.setState({
+                    on_meeting: true,
+                    meeting_start: data.current_event.start_time.slice(0, data.current_event.start_time.length - 3),
+                    meeting_end: data.current_event.end_time.slice(0, data.current_event.end_time.length - 3),
+                })
+            } else {
+                this.setState({
+                    on_meeting: false,
+                })
+            }
+        }).catch(error => {
+            console.log(error);
+            /*this.setState({
+                is_error: true,
+                error_name: error.response.status,
+            });*/
+            if (error.response.status === 401) {
+                window.location.replace('/login');
+            }
+            /*if (error.response.status === 404) {
+                this.setState({
+                    error_text: 'Пользователь не найден',
+                });
+            } else {
+                this.setState({
+                    error_text: 'Произошла ошибка. Попробуйте позже',
+                });
+            }*/
+        });
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
@@ -181,6 +200,71 @@ class UserInfo extends React.Component {
                 break;
             }
         }
+    }
+
+    getDayAndMonth(idx) {
+        if (this.state.dates.length <= idx) {
+            return (
+                <div className='calendar-data-panel'>
+                    <h6>...</h6>
+                    <span>...</span>
+                </div>
+            )
+        }
+        let year_month_day = this.state.dates[idx].split('-')
+        let day = 'Сегодня'
+        if (idx === 1) {
+            day = 'Завтра'
+        }
+        return (
+            <div className='page-calendar-data-panel'>
+                <h6>{day}</h6>
+                <h6>{year_month_day[2] + '.' + year_month_day[1]}</h6>
+            </div>
+        )
+    }
+
+    getStripe(idx) {
+        if (this.state.dates.length <= idx) {
+            return (
+                <></>
+            )
+        }
+        let data = []
+        for (let i = 0; i < this.state.data_list.length; i++) {
+            if (this.state.data_list[i].start_date === this.state.dates[idx]) {
+                let obj = this.state.data_list[i]
+                let end_time = obj.end_time.slice(0, obj.end_time.length - 3)
+                let participants = obj.participants
+                for (let j = 0; j < participants.length; j++) {
+                    participants[j] = participants[j].slice(7, participants[j].length)
+                }
+                if (end_time == '00:00') {
+                    end_time = '23:59'
+                }
+                data.push({
+                    start: obj.start_time.slice(0, obj.start_time.length - 3),
+                    end: end_time,
+                    name: obj.summary,
+                    description: obj.description,
+                    participants: obj.participants
+                })
+            }
+        }
+        return (
+            <Stripe data={{meetings: data}} is_horizontal={true} date={this.state.dates[idx]} readonly={true} />
+        )
+    }
+
+    getDataStatus() {
+        if (!this.state.on_meeting) {
+            return (<></>)
+        }
+        return (
+            <div className='page-info-data-status'>
+                <h6 className='contrast-text'>{'На встрече с ' + this.state.meeting_start + ' до ' + this.state.meeting_end}</h6>
+            </div>
+        )
     }
 
     render() {
@@ -204,9 +288,7 @@ class UserInfo extends React.Component {
                             <div className='page-info-data-post'>
                                 <span className='minor-text'>{this.state.position}</span>
                             </div>
-                            <div className='page-info-data-status'>
-                                <h6 className='contrast-text'>На встрече с 11:00 до 12:00</h6>
-                            </div>
+                            {this.getDataStatus()}
                             <div className='page-info-data-full_post'>
                                 <span>{this.state.name_of_unit}</span>
                             </div>
@@ -231,10 +313,16 @@ class UserInfo extends React.Component {
                     <div className='page-calendar'>
                         <h6>Календарь на ближайшие дни:</h6>
                         <div className='page-calendar-data' style={{ zIndex: '10' }}>
-                            {this.genCalendarData(true)}
+                            {this.getDayAndMonth(0)}
+                            <div className='page-calendar-data-space'>
+                                {this.getStripe(0)}
+                            </div>
                         </div>
                         <div className='page-calendar-data' style={{ zIndex: '1' }}>
-                            {this.genCalendarData(false)}
+                        {this.getDayAndMonth(1)}
+                            <div className='page-calendar-data-space'>
+                                {this.getStripe(1)}
+                            </div>
                         </div>
                         <a className="page-calendar-button" href={'/calendar/' + this.state.id}>Перейти в календарь</a>
                     </div>

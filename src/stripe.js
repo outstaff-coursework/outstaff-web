@@ -11,7 +11,6 @@ class Stripe extends React.Component {
         super(props)
         
         let meetings_z_index = []
-        console.log(props.data)
         for (let i = 0; i < props.data.meetings.length; i++) {
             meetings_z_index[i] = 1 + i
         }
@@ -142,7 +141,7 @@ class Stripe extends React.Component {
     }
 
     async handleMouseDown(event) {
-        if (this.state.block_adding_new_meetings) {
+        if (this.state.block_adding_new_meetings || this.props.readonly) {
             return;
         }
         let start_x;
@@ -170,7 +169,7 @@ class Stripe extends React.Component {
     }
 
     async handleMouseUp(event) {
-        if (!this.state.adding_new_meeting || this.state.block_adding_new_meetings) {
+        if (!this.state.adding_new_meeting || this.state.block_adding_new_meetings || this.props.readonly) {
             return
         }
         let end_x;
@@ -248,7 +247,7 @@ class Stripe extends React.Component {
     }
 
     async handleMouseMove(event) {
-        if (!this.state.adding_new_meeting || this.state.block_adding_new_meetings) {
+        if (!this.state.adding_new_meeting || this.state.block_adding_new_meetings || this.props.readonly) {
             return
         }
         let end_x;
@@ -267,7 +266,7 @@ class Stripe extends React.Component {
     }
 
     async handleMouseLeave(event) {
-        if (!this.state.adding_new_meeting || this.state.block_adding_new_meetings) {
+        if (!this.state.adding_new_meeting || this.state.block_adding_new_meetings || this.props.readonly) {
             return
         }
         await this.setState({ adding_new_meeting: false });
