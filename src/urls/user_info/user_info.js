@@ -153,7 +153,7 @@ class UserInfo extends React.Component {
                 data_list: data.events,
                 dates: data.dates
             })
-            if (data.current_event !== undefined) {
+            if (data.current_event !== undefined && data.current_event !== null) {
                 this.setState({
                     on_meeting: true,
                     meeting_start: data.current_event.start_time.slice(0, data.current_event.start_time.length - 3),
