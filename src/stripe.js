@@ -243,7 +243,7 @@ class Stripe extends React.Component {
         let end_date = new Date(this.props.date + "T" + end_time + ":" + end_minutes);
         start_date = start_date.toISOString().replace(/-|:|\.\d\d\d/g, "");
         end_date = end_date.toISOString().replace(/-|:|\.\d\d\d/g, "");
-        window.location.replace('https://www.google.com/calendar/render?action=TEMPLATE&text=Встреча&dates=' + start_date + '/' + end_date);
+        window.open('https://www.google.com/calendar/render?action=TEMPLATE&text=Встреча&dates=' + start_date + '/' + end_date, '_blank', 'noopener,noreferrer');
     }
 
     async handleMouseMove(event) {

@@ -44,6 +44,9 @@
 
 .header-content-left-logo-section-name {
     color: #fffffa;
+    font-size: 30px;
+    font-weight: 600;
+    text-decoration: none;
 }
 
 .header-content-left-search {
@@ -91,7 +94,7 @@
 }
 
 .header-content-right-user-panel {
-    width: 100px;
+    width: 150px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -104,20 +107,27 @@
     cursor: pointer;
 }
 
-.header-content-right-logout-panel-logout {
-    height: 50px;
-    width: 100px;
+.header-content-right-logout-panel {
+    width: 150px;
     margin-top: 50px;
-    margin-left: -100px;
+    margin-left: -150px;
+    display: flex;
+    flex-direction: column;
+}
+
+.header-content-right-logout-panel-elem {
+    height: 50px;
+    width: 150px;
     background-color: #2c302e;
     display: flex;
     justify-content: center;
     align-items: center;
+    flex-shrink: 0;
     color: #fffffa;
     font-weight: bold;
 }
 
-.header-content-right-logout-panel-logout:hover {
+.header-content-right-logout-panel-elem:hover {
     background-color: black;
     cursor: pointer;
 }

@@ -91,6 +91,14 @@ class Calendar extends React.Component {
             )
         }
         let year_month_day = this.state.dates[idx].split('-')
+        if (idx == 5 || idx == 6) {
+            return (
+                <div className='calendar-data-panel' style={{backgroundColor: '#ce1b1b'}}>
+                    <h6>{year_month_day[2]}</h6>
+                    <span>{month_to_name[year_month_day[1]]}</span>
+                </div>
+            )
+        }
         return (
             <div className='calendar-data-panel'>
                 <h6>{year_month_day[2]}</h6>

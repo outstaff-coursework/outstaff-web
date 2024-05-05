@@ -70,14 +70,31 @@ class Header extends React.Component {
         if (!this.state.loaded_logout) {
             return
         }
+        let username = localStorage.getItem('username')
         return (
-            <div className='header-content-right-logout-panel-logout' onClick={(event) => {
+            <>
+            <div className='header-content-right-logout-panel-elem' onClick={(event) => {
+                window.location.replace('/user/' + username);
+            }}>
+                <span>Профиль</span>
+            </div>
+            <div className='header-content-right-logout-panel-elem' onClick={(event) => {
                 localStorage.setItem('username', '')
                 window.location.replace('/login');
             }}>
                 <span>Выйти</span>
             </div>
+            </>
         )
+    }
+
+    getHref() {
+        let username = localStorage.getItem('username')
+        if (username === '') {
+            return '/login'
+        } else {
+            return '/user/' + username
+        }
     }
 
     render() {
@@ -89,7 +106,7 @@ class Header extends React.Component {
                             <div className='header-content-left-logo-section-logo'>
                                 <img src={logo} alt='logo' />
                             </div>
-                            <h5 className='header-content-left-logo-section-name'>Outstaff</h5>
+                            <a href={this.getHref()} className='header-content-left-logo-section-name'>Outstaff</a>
                         </div>
                         <input type='text' placeholder='🔍 Поиск...' className='header-content-left-search' onChange={(event) => {this.changeSearchWord(event.target.value)}} />
                         <div className='header-content-left-search-list'>{this.getSearchList()}</div>
