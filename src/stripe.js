@@ -179,7 +179,7 @@ class Stripe extends React.Component {
             end_y = this.state.stripe_height + event.target.offsetTop
         } else {
             end_x = this.state.stripe_width + event.target.offsetLeft
-            end_y = Math.round(Math.floor(event.clientY / this.state.stripe_height * 48) / 48 * this.state.stripe_height)
+            end_y = Math.round(Math.floor(event.clientY / this.state.stripe_height * 48) / 48 * this.state.stripe_height - this.ref.current.getBoundingClientRect().y - 5)
         }
         await this.setState({
             adding_new_meeting: false,
@@ -193,7 +193,7 @@ class Stripe extends React.Component {
             start_time = Math.round(this.state.start_x / this.state.stripe_width * 48)
             end_time = Math.round(this.state.end_x / this.state.stripe_width * 48)
         } else {
-            start_time = Math.round(this.state.start_y / this.state.stripe_height * 48)
+            start_time = Math.round((this.state.start_y - this.ref.current.getBoundingClientRect().y - 5) / this.state.stripe_height * 48)
             end_time = Math.round(this.state.end_y / this.state.stripe_height * 48)
         }
         let start_minutes = '00'
@@ -240,6 +240,7 @@ class Stripe extends React.Component {
         }) */
         
         let start_date = new Date(this.props.date + "T" + start_time + ":" + start_minutes);
+        console.log(this.props.date, end_time, end_minutes)
         let end_date = new Date(this.props.date + "T" + end_time + ":" + end_minutes);
         start_date = start_date.toISOString().replace(/-|:|\.\d\d\d/g, "");
         end_date = end_date.toISOString().replace(/-|:|\.\d\d\d/g, "");

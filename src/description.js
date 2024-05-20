@@ -1,4 +1,5 @@
 import React from 'react';
+import Linkify from 'react-linkify';
 
 import './description.css'
 
@@ -36,7 +37,9 @@ class Description extends React.Component {
             >
                 <h5>{this.props.meeting.name}</h5>
                 <h6>{this.props.meeting.start} - {this.props.meeting.end}</h6>
-                <span>{this.props.meeting.description}</span>
+                <Linkify>
+                    <span>{this.props.meeting.description}</span>
+                </Linkify>
                 <h6>Участники:</h6>
                 <div className='rcs-stripe-meeting-description-participants'>
                     {this.renderParticipants()}
