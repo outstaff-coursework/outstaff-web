@@ -1,6 +1,8 @@
 import React from "react";
 import axios from "axios";
+import {toast, ToastContainer} from "react-toastify";
 import {base_url} from "../../constants";
+import 'react-toastify/dist/ReactToastify.css';
 import './login.css';
 
 
@@ -17,6 +19,16 @@ class Login extends React.Component {
 
     handleSubmit = (event) => {
         event.preventDefault();
+
+        const notify_error = () => toast.error('Неправильный логин или пароль!', {
+            position: "top-right",
+            autoClose: 1000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            progress: undefined,
+        });
+
         axios.post(base_url + '/login', {
             username: event.target[0].value,
             password: event.target[1].value
@@ -31,6 +43,7 @@ class Login extends React.Component {
         })
         .catch(function (error) {
             console.log(error);
+            return (notify_error());
         });
     }
 
@@ -47,6 +60,7 @@ class Login extends React.Component {
                         <button>Войти</button>
                     </form>
                 </div>
+                <ToastContainer />
             </div>
         );
     }

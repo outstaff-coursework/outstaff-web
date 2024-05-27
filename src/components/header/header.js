@@ -97,6 +97,19 @@ class Header extends React.Component {
         }
     }
 
+    getPanel() {
+        if (localStorage.getItem('username') === 'admin') {
+            return (
+                <div className='header-content-left-panel-section'>
+                    <a href='/panel' className='header-content-left-panel-section-ref'>Панель</a>
+                </div>
+            )
+        }
+        return (
+            <></>
+        )
+    }
+
     render() {
         return (
             <div className='header' style={{ zIndex: '10000' }}>
@@ -109,6 +122,7 @@ class Header extends React.Component {
                             <a href={this.getHref()} className='header-content-left-logo-section-name'>Outstaff</a>
                         </div>
                         <input type='text' placeholder='🔍 Поиск...' className='header-content-left-search' onChange={(event) => {this.changeSearchWord(event.target.value)}} />
+                        {this.getPanel()}
                         <div className='header-content-left-search-list'>{this.getSearchList()}</div>
                     </div>
                     <div className='header-content-right' >
